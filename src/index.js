@@ -56,8 +56,9 @@ app.post('/users', (request, response) => {
   if (users.some(user => user.username == username))
     return response.status(400).json({error: "User already exists"})
 
-    users.push(newUser(name, username))
-    return response.status(201).send()
+  const user = newUser(name, username)
+  users.push(user)
+  return response.status(201).json(user)
 });
 
 app.get('/todos', checksExistsUserAccount, (request, response) => {
@@ -67,8 +68,9 @@ app.get('/todos', checksExistsUserAccount, (request, response) => {
 app.post('/todos', checksExistsUserAccount, (request, response) => {
   const { title, deadline } = request.body
   user = request.user
-  user.todos.push(newTask(title, deadline))
-  return response.status(201).send()
+  task = newTask(title, deadline)
+  user.todos.push(task)
+  return response.status(201).json(task)
 });
 
 app.put('/todos/:id', checksExistsUserAccount, checksExistsTask, (request, response) => {
@@ -76,23 +78,20 @@ app.put('/todos/:id', checksExistsUserAccount, checksExistsTask, (request, respo
   const task = request.task
   task.title = title
   task.deadline = new Date(deadline)
-  //return response.status(200).json(task)
-  return response.satatus(204).send()
+  return response.status(201).json(task)
 });
 
 app.patch('/todos/:id/done', checksExistsUserAccount, checksExistsTask, (request, response) => {
   const task = request.task
   task.done = true
-  return response.status(200).json(task)
- //return response.satatus(204).send()
+  return response.status(201).json(task)
 });
 
 app.delete('/todos/:id', checksExistsUserAccount, checksExistsTask, (request, response) => {
   const task = request.task
   const user = request.user
   user.todos = user.todos.filter(element => element.id !== task.id)
-  //return response.status(200).json(user.todos)
-  return response.satatus(204).send()
+  return response.status(204).send()
 });
 
 module.exports = app;

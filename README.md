@@ -9,8 +9,13 @@
 - ExpressJS
 - Yarn
 - Nodeman
+- Jest
 
 ## Running
-To run this sample use the following command:
+To run this sample use:
 
 ``` yarn dev ```
+
+To test it use:
+
+``` yarn test ```
