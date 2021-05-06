@@ -53,12 +53,11 @@ function newTask(title, deadline) {
 
 app.post('/users', (request, response) => {
   const { name, username } = request.body
-  users.push(newUser(name, username))
-
   if (users.some(user => user.username == username))
     return response.status(400).json({error: "User already exists"})
 
-  return response.status(201).send()
+    users.push(newUser(name, username))
+    return response.status(201).send()
 });
 
 app.get('/todos', checksExistsUserAccount, (request, response) => {
